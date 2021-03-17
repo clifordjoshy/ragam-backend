@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "name": "Event",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "submissionDate": {
+      "type": "datetime",
+      "required": false
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "coverImage": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "isTeamEvent": {
+      "type": "boolean",
+      "required": true
+    },
+    "Rules": {
+      "type": "richtext",
+      "private": false,
+      "required": true
+    },
+    "category": {
+      "via": "events",
+      "autoPopulate": false,
+      "model": "category"
+    },
+    "contacts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "contact.contact"
+    },
+    "result": {
+      "type": "richtext"
+    },
+    "regStartDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "regEndDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "minTeamSize": {
+      "type": "integer"
+    },
+    "maxTeamSize": {
+      "type": "integer"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "isSubmissionEvent": {
+      "type": "boolean",
+      "required": true
+    }
+  }
+}

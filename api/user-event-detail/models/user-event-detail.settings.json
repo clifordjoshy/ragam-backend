@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_event_details",
+  "info": {
+    "name": "UserEventDetail",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "event": {
+      "model": "event",
+      "autoPopulate": false
+    },
+    "submissions": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "teamMembers": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "eventDetails"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "participating",
+        "knocked_out",
+        "position_1",
+        "position_2",
+        "position_3",
+        "consolation"
+      ]
+    }
+  }
+}
