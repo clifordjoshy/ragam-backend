@@ -14,7 +14,7 @@ module.exports = {
         
         if(entity === null)
             return ctx.badRequest("Invalid ID");
-        const entity2 = {name : entity.name, collegeName: entity.collegeName};
+        const entity2 = {id : entity.id, name : entity.name, collegeName: entity.collegeName};
 
         return sanitizeEntity(entity2, { model: strapi.plugins['users-permissions'].models.user });
       },

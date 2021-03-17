@@ -16,7 +16,7 @@
       "unique": true,
       "configurable": false,
       "required": true,
-      "private":true
+      "private": true
     },
     "email": {
       "type": "email",

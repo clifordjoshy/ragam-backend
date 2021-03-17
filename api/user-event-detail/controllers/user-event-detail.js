@@ -48,7 +48,7 @@ module.exports = {
 			return ctx.unauthorized("Not a part of this team");
 
 		if (eventDetail.status !== 'participating')
-			return ctx.unauthorized('Cannote edit this field');
+			return ctx.unauthorized('Cannot edit this field');
 
 		let { teamMembers, submissions } = ctx.request.body;
 		
@@ -65,23 +65,36 @@ module.exports = {
 		if(typeof submissions !== 'undefined' && 
 				!(eventObj.isSubmissionEvent && new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.submissionDate)))
 			return ctx.badRequest("Submissions cannot be edited");
+
+		for(const mem of teamMembers){
+			if(mem.id == ctx.state.user.id)
+				continue;
+			
+			let found =  await strapi.query('user', 'users-permissions').findOne({id: mem.id});
+
+			if (found === null)
+				return ctx.badRequest("Invalid team member id");
+
+			if(typeof (found.eventDetails.find(o => o.event === eventDetail.event)) !== 'undefined')
+				return ctx.badRequest("RagamID " + found.ragamID + " has already registered for this event.");
+			
+		}
 		
-		const updateData = { teamMembers, submissions };
+		if(!areTeamMembersFine)
+			
 
 		if(!Array.isArray(submissions))
 			submissions = [];
 
 		const savedSubmissions = (await strapi.services['user-event-detail'].findOne({id: eventDetail.id})).submissions;
-		savedSubmissions.forEach(
-			async function(sub){
-				let found = submissions.find(o => o.id === sub.id);
-				if(typeof found === 'undefined'){
-					await strapi.plugins['upload'].services.upload.remove(sub);
-				}
+		for(const sub of savedSubmissions){
+			let found = submissions.find(o => o.id === sub.id);
+			if(typeof found === 'undefined'){
+				await strapi.plugins['upload'].services.upload.remove(sub);
 			}
-		);
+		}
 
-		updateData.submissions = savedSubmissions;		//don't include random submissions from the request
+		const updateData = { teamMembers, savedSubmissions };
 
 		let entity = await strapi.services['user-event-detail'].update({ id: eventDetail.id }, updateData);
 
@@ -97,7 +110,8 @@ module.exports = {
 			return ctx.unauthorized("Not a part of this team");
 
 		const savedSubmissions = (await strapi.services['user-event-detail'].findOne({id: eventDetail.id})).submissions;
-		savedSubmissions.forEach(async sub => await strapi.plugins['upload'].services.upload.remove(sub));
+		for(const sub of savedSubmissions)
+			await strapi.plugins['upload'].services.upload.remove(sub);
 	
 		const detail = await strapi.services['user-event-detail'].delete(eventDetail);
 

@@ -34,7 +34,7 @@ module.exports = async (ctx, next) => {
   };
 
   // remove properties from the update object that are undefined (not submitted by the user in the PUT request)
-  Object.keys(updateData).forEach((key) => updateData[key] === undefined && delete updateData[key]);
+  Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
   if (Object.keys(updateData).length === 0) {
     return ctx.badRequest("No data submitted")
   }

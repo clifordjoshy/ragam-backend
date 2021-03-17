@@ -12,8 +12,8 @@
   },
   "attributes": {
     "event": {
-      "model": "event",
-      "autoPopulate": false
+      "autoPopulate": false,
+      "model": "event"
     },
     "submissions": {
       "collection": "file",
@@ -41,6 +41,11 @@
         "position_3",
         "consolation"
       ]
+    },
+    "eventMeta": {
+      "type": "component",
+      "repeatable": true,
+      "component": "event-meta.event-meta"
     }
   }
 }
