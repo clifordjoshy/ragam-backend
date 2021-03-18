@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "fs": "0.0.1-security",
     "knex": "0.21.18",
     "nanoid": "^3.1.21",
     "pg": "^8.5.1",
