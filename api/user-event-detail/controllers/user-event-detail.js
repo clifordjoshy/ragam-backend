@@ -131,7 +131,7 @@ module.exports = {
 		const updateData = { teamMembers, savedSubmissions };
 
 		let entity = await strapi.services['user-event-detail'].update({ id: eventDetail.id }, updateData);
-		detail.metaValues = null;
+		entity.metaValues = null;
 		return sanitizeEntity(entity, { model: strapi.models['user-event-detail'] });
 	},
 
