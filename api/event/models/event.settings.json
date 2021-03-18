@@ -44,9 +44,9 @@
       "required": true
     },
     "category": {
-      "via": "events",
       "autoPopulate": false,
-      "model": "category"
+      "model": "category",
+      "via": "events"
     },
     "contacts": {
       "type": "component",
@@ -77,6 +77,9 @@
     "isSubmissionEvent": {
       "type": "boolean",
       "required": true
+    },
+    "metaTitles": {
+      "type": "json"
     }
   }
 }

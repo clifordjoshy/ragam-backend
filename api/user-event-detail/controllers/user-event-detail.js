@@ -42,7 +42,7 @@ module.exports = {
 
 	async update(ctx) {
 		let paramId = Number.parseInt(ctx.params.id, 10);
-		const eventDetail = ctx.state.user.eventDetails.find(o => o.id === paramId);
+		let eventDetail = ctx.state.user.eventDetails.find(o => o.id === paramId);
 
 		if (typeof eventDetail === 'undefined')
 			return ctx.unauthorized("Not a part of this team");
@@ -53,10 +53,6 @@ module.exports = {
 		let { teamMembers, submissions } = ctx.request.body;
 		
 		let eventObj = await strapi.services.event.findOne({id: eventDetail.event});
-
-		if(Array.isArray(teamMembers) && (teamMembers.length > eventObj.maxTeamSize || teamMembers.length < 1))
-			return ctx.badRequest("Invalid team size");
-
 		
 		let currentDate = new Date();
 		if(typeof teamMembers !== 'undefined' && !(new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.regEndDate)))
@@ -65,28 +61,36 @@ module.exports = {
 		if(typeof submissions !== 'undefined' && 
 				!(eventObj.isSubmissionEvent && new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.submissionDate)))
 			return ctx.badRequest("Submissions cannot be edited");
-
-		for(const mem of teamMembers){
-			if(mem.id == ctx.state.user.id)
-				continue;
-			
-			let found =  await strapi.query('user', 'users-permissions').findOne({id: mem.id});
-
-			if (found === null)
-				return ctx.badRequest("Invalid team member id");
-
-			if(typeof (found.eventDetails.find(o => o.event === eventDetail.event)) !== 'undefined')
-				return ctx.badRequest("RagamID " + found.ragamID + " has already registered for this event.");
-			
-		}
 		
-		if(!areTeamMembersFine)
-			
+		eventDetail = await strapi.services['user-event-detail'].findOne({id: eventDetail.id})
+
+		if(Array.isArray(teamMembers)){
+			if (teamMembers.length > eventObj.maxTeamSize || teamMembers.length < 1)
+				return ctx.badRequest("Invalid team size");
+
+			for(const mem of teamMembers){
+				//if already a part of team
+				if(typeof (eventDetail.teamMembers.find(o => o.id === mem.id)) !== 'undefined')
+					continue;
+				
+				//new user
+				let found =  await strapi.query('user', 'users-permissions').findOne({id: mem.id});
+	
+				if (found === null)
+					return ctx.badRequest("Invalid team member id");
+	
+				if(typeof (found.eventDetails.find(o => o.event === eventDetail.event)) !== 'undefined')
+					return ctx.badRequest("RagamID " + found.ragamID + " has already registered for this event.");
+				
+			}
+		} else {
+			teamMembers = eventDetail.teamMembers
+		}
 
 		if(!Array.isArray(submissions))
 			submissions = [];
 
-		const savedSubmissions = (await strapi.services['user-event-detail'].findOne({id: eventDetail.id})).submissions;
+		const savedSubmissions = eventDetail.submissions;
 		for(const sub of savedSubmissions){
 			let found = submissions.find(o => o.id === sub.id);
 			if(typeof found === 'undefined'){
