@@ -147,7 +147,7 @@ module.exports = {
 		for (const sub of savedSubmissions)
 			await strapi.plugins['upload'].services.upload.remove(sub);
 
-		const detail = await strapi.services['user-event-detail'].delete(eventDetail);
+		const detail = await strapi.services['user-event-detail'].delete({ id: eventDetail.id });
 		detail.metaValues = null;
 		return sanitizeEntity(detail, { model: strapi.models['user-event-detail'] });
 	},
