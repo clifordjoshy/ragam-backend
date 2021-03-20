@@ -19,10 +19,6 @@
       "type": "datetime",
       "required": false
     },
-    "description": {
-      "type": "richtext",
-      "required": true
-    },
     "coverImage": {
       "model": "file",
       "via": "related",
@@ -38,11 +34,6 @@
       "type": "boolean",
       "required": true
     },
-    "Rules": {
-      "type": "richtext",
-      "private": false,
-      "required": true
-    },
     "category": {
       "autoPopulate": false,
       "model": "category",
@@ -52,9 +43,6 @@
       "type": "component",
       "repeatable": true,
       "component": "contact.contact"
-    },
-    "result": {
-      "type": "richtext"
     },
     "regStartDate": {
       "type": "datetime",
@@ -80,6 +68,15 @@
     },
     "metaTitles": {
       "type": "json"
+    },
+    "description": {
+      "type": "text"
+    },
+    "rules": {
+      "type": "text"
+    },
+    "result": {
+      "type": "text"
     }
   }
 }
