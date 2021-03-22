@@ -15,7 +15,7 @@
       "type": "string",
       "required": true
     },
-    "submissionDate": {
+    "submissionEndDate": {
       "type": "datetime",
       "required": false
     },
@@ -88,6 +88,9 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "submissionStartDate": {
+      "type": "datetime"
     }
   }
 }
