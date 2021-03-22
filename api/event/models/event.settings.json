@@ -91,6 +91,9 @@
     },
     "submissionStartDate": {
       "type": "datetime"
+    },
+    "maxFileSize": {
+      "type": "integer"
     }
   }
 }

@@ -88,8 +88,10 @@ module.exports = {
 		if (typeof teamMembers !== 'undefined' && !(new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.regEndDate)))
 			return ctx.badRequest("Team members can't be edited after reg period");
 
+		
 		if (typeof submissions !== 'undefined' &&
-			!(eventObj.isSubmissionEvent && new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.submissionDate)))
+				!(eventObj.isSubmissionEvent && new Date(eventObj.submissionStartDate) < currentDate && 
+				currentDate < new Date(new Date(eventObj.submissionEndDate).getTime() + 900000)))		//15 minutes late submission window
 			return ctx.badRequest("Submissions cannot be edited");
 
 		eventDetail = await strapi.services['user-event-detail'].findOne({ id: eventDetail.id })
