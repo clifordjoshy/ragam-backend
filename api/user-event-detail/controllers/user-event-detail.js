@@ -120,6 +120,7 @@ module.exports = {
 		if (!Array.isArray(submissions))
 			submissions = null;
 
+		const savedSubmissions = eventDetail.submissions;
 		if(submissions != null){
 			const savedSubmissions = eventDetail.submissions;
 			for (const sub of savedSubmissions) {
