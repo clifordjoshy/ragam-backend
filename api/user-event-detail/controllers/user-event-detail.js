@@ -85,14 +85,12 @@ module.exports = {
 		let eventObj = await strapi.services.event.findOne({ id: eventDetail.event });
 
 		let currentDate = new Date();
-		if (typeof teamMembers !== 'undefined' && !(new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.regEndDate)))
-			return ctx.badRequest("Team members can't be edited after reg period");
+		if (!(new Date(eventObj.regStartDate) < currentDate && currentDate < new Date(eventObj.regEndDate)))
+			teamMembers = null;
 
-		
-		if (typeof submissions !== 'undefined' &&
-				!(eventObj.isSubmissionEvent && new Date(eventObj.submissionStartDate) < currentDate && 
-				currentDate < new Date(new Date(eventObj.submissionEndDate).getTime() + 900000)))		//15 minutes late submission window
-			return ctx.badRequest("Submissions cannot be edited");
+		if (!(eventObj.isSubmissionEvent && new Date(eventObj.submissionStartDate) < currentDate && 
+		currentDate < new Date(new Date(eventObj.submissionEndDate).getTime() + 900000)))		//15 minutes late submission window
+			submissions = null;
 
 		eventDetail = await strapi.services['user-event-detail'].findOne({ id: eventDetail.id })
 
@@ -116,21 +114,24 @@ module.exports = {
 
 			}
 		} else {
-			teamMembers = eventDetail.teamMembers
+			teamMembers = null;
 		}
 
 		if (!Array.isArray(submissions))
-			submissions = [];
+			submissions = null;
 
-		const savedSubmissions = eventDetail.submissions;
-		for (const sub of savedSubmissions) {
-			let found = submissions.find(o => o.id === sub.id);
-			if (typeof found === 'undefined') {
-				await strapi.plugins['upload'].services.upload.remove(sub);
+		if(submissions != null){
+			const savedSubmissions = eventDetail.submissions;
+			for (const sub of savedSubmissions) {
+				let found = submissions.find(o => o.id === sub.id);
+				if (typeof found === 'undefined') {
+					await strapi.plugins['upload'].services.upload.remove(sub);
+				}
 			}
 		}
 
 		const updateData = { teamMembers, savedSubmissions };
+		Object.keys(updateData).forEach(key => updateData[key] === null && delete updateData[key]);
 
 		let entity = await strapi.services['user-event-detail'].update({ id: eventDetail.id }, updateData);
 		entity.metaValues = null;
