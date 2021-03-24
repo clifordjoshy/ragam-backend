@@ -56,11 +56,13 @@
       "type": "integer"
     },
     "maxTeamSize": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "isSubmissionEvent": {
       "type": "boolean",
