@@ -64,8 +64,11 @@ module.exports = {
 
 		const detail = await strapi.services['user-event-detail'].findOne({ id: paramId });
 		const event = await strapi.services.event.findOne({ id: detail.event });
+
 		if (new Date() < new Date(event.regEndDate))
 			detail.metaValues = null;
+		else if(Array.isArray(event.commonMetaValues))
+			detail.metaValues = ((Array.isArray(detail.metaValues))?detail.metaValues:[]).concat(event.commonMetaValues);
 		
 		return sanitizeEntity(detail, { model: strapi.models['user-event-detail'] });
 	},
@@ -138,7 +141,6 @@ module.exports = {
 		entity.metaValues = null;
 		return sanitizeEntity(entity, { model: strapi.models['user-event-detail'] });
 	},
-
 
 	async delete(ctx) {
 		let paramId = Number.parseInt(ctx.params.id, 10);

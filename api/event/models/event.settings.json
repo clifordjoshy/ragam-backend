@@ -96,6 +96,10 @@
     },
     "maxFileSize": {
       "type": "integer"
+    },
+    "commonMetaValues": {
+      "type": "json",
+      "private": true
     }
   }
 }
