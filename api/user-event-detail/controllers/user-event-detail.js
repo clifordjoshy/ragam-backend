@@ -67,8 +67,8 @@ module.exports = {
 
 		if (new Date() < new Date(event.regEndDate))
 			detail.metaValues = null;
-		else if(Array.isArray(event.commonMetaValues))
-			detail.metaValues = ((Array.isArray(detail.metaValues))?detail.metaValues:[]).concat(event.commonMetaValues);
+		if(Array.isArray(event.commonMetaValues))
+			detail.metaValues = event.commonMetaValues.concat((Array.isArray(detail.metaValues))?detail.metaValues:[]);
 		
 		return sanitizeEntity(detail, { model: strapi.models['user-event-detail'] });
 	},
