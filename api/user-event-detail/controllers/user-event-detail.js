@@ -32,12 +32,12 @@ module.exports = {
 		let metaValues = null;
 
 		switch (eventObj.name) {
-			case "Wordsmith - Prose": {
+			case "Wordsmith (Prose)": {
 				let title_list = JSON.parse(fs.readFileSync('./event_metavalues/wordsmith-prose.json'));
 				metaValues = [title_list[Math.floor(Math.random() * (title_list.length - 1))]];
 				break;
 			}
-			case "Wordsmith - Poem": {
+			case "Wordsmith (Poem)": {
 				let title_list = JSON.parse(fs.readFileSync('./event_metavalues/wordsmith-poem.json'));
 				metaValues = [title_list[Math.floor(Math.random() * (title_list.length - 1))]];
 				break;
