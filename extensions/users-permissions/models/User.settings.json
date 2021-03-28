@@ -71,8 +71,8 @@
       "type": "string"
     },
     "eventDetails": {
-      "via": "teamMembers",
       "collection": "user-event-detail",
+      "via": "teamMembers",
       "dominant": true
     },
     "ragamID": {
@@ -89,6 +89,9 @@
         "other",
         "prefer_not_to_say"
       ]
+    },
+    "referralCode": {
+      "type": "string"
     }
   }
 }
