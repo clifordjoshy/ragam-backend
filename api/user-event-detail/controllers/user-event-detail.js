@@ -42,6 +42,16 @@ module.exports = {
 				metaValues = [title_list[Math.floor(Math.random() * (title_list.length - 1))]];
 				break;
 			}
+			case "Reporter (E)": {
+				let title_list = JSON.parse(fs.readFileSync('./event_metavalues/reporter-eng.json'));
+				metaValues = [title_list[Math.floor(Math.random() * (title_list.length - 1))]];
+				break;
+			}			
+			case "Reporter (M)": {
+				let title_list = JSON.parse(fs.readFileSync('./event_metavalues/reporter-mal.json'));
+				metaValues = [title_list[Math.floor(Math.random() * (title_list.length - 1))]];
+				break;
+			}
 		}
 
 		const updateData = {
