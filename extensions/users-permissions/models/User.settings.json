@@ -71,8 +71,8 @@
       "type": "string"
     },
     "eventDetails": {
-      "collection": "user-event-detail",
       "via": "teamMembers",
+      "collection": "user-event-detail",
       "dominant": true
     },
     "ragamID": {
