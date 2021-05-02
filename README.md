@@ -1,3 +1,3 @@
-# Strapi application
+# Ragam'21 Backend
 
-A quick description of your strapi application
+The backend for the Ragam'21 website made in Strapi.
